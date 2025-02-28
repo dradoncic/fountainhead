@@ -6,11 +6,21 @@
 @tailwind utilities;
 
 :root {
-  --background: #fafafa;
-  --foreground: #18181b;
-  --muted: #71717a;
-  --border: #e4e4e7;
-  --accent: #3b82f6;
+  --background: #f9fafb;
+  --foreground: #111827;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --primary: #4f46e5;
+  --primary-foreground: #ffffff;
+  --secondary: #f3f4f6;
+  --secondary-foreground: #111827;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --ring: #4f46e5;
 }
 
 @layer base {
@@ -21,7 +31,7 @@
 
   /* Modern Scrollbar */
   ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
   }
 
   ::-webkit-scrollbar-track {
@@ -30,7 +40,7 @@
 
   ::-webkit-scrollbar-thumb {
     background: var(--border);
-    border-radius: 5px;
+    border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
@@ -53,6 +63,6 @@
   .button {
     @apply bg-[var(--accent)] text-white rounded-lg px-6 py-2 
            font-medium transition-all duration-200 
-           hover:opacity-90 disabled:opacity-50;
+           hover:bg-[var(--accent-hover)] disabled:opacity-50;
   }
 }
