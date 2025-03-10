@@ -1,19 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SearchSection } from './components/SearchSection';
 import { SelectedAccounts } from './components/SelectedAccounts';
-import { RebalanceResults } from './components/RebalanceResults';
 import { LoadingButton } from './components/LoadingButton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
-import { mockRebalanceResponse } from './utils/api';
+import { searchAccounts, rebalanceAccounts } from './utils/api';
 import './index.css';
 
 export default function App() {
   const [selectedAccounts, setSelectedAccounts] = useState(new Map());
-  const [rebalanceResults, setRebalanceResults] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [accountsData, setAccountsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [success, setSuccess] = useState(null);
+
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        const data = await searchAccounts();
+        setAccountsData(data);
+      } catch (error) {
+        setError("Failed to fetch accounts. Please try again.");
+        console.error("Error fetching accounts:", error);
+      }
+    };
+
+    fetchAccounts();
+  }, []);
 
   const handleAccountSelection = (account) => {
     setSelectedAccounts(new Map(selectedAccounts.set(account.id, account)));
@@ -34,41 +46,47 @@ export default function App() {
   };
 
   const handleRebalance = async () => {
+    const accountsList = Array.from(selectedAccounts.values()).map(account => ({
+      id: account.id,
+      name: account.name,
+      householdId: account.householdId,
+    }));
+
+    if (accountsList.length === 0) {
+      setError("Please select at least one account for rebalancing.");
+      setTimeout(() => setError(null), 2000);
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
+    setSuccess(null);
+
     try {
-      const results = await mockRebalanceResponse(Array.from(selectedAccounts.keys()));
-      setRebalanceResults(results);
-    } catch (err) {
-      setError('Failed to process rebalance request. Please try again.');
+      const data = await rebalanceAccounts(accountsList);
+      console.log("Backend response:", data);
+      setSuccess("Rebalance preview request sent successfully!");
+      setTimeout(() => setSuccess(null), 2000); 
+    } catch (error) {
+      setError("Failed to send rebalance request. ");
+      setTimeout(() => setError(null), 2000); 
+      console.error("Error sending rebalance request:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const clearRebalanceResults = () => {
-    setRebalanceResults(null);
-  };
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Portfolio Rebalancing</h1>
-        {rebalanceResults && (
-          <Button 
-            variant="ghost" 
-            onClick={clearRebalanceResults}
-            className="flex items-center gap-2"
-          >
-            <X size={16} />
-            Clear Results
-          </Button>
-        )}
       </div>
       
       <SearchSection
         onSelectAccount={handleAccountSelection}
         onSelectHousehold={handleHouseholdSelection}
+        accountsData={accountsData}
       />
 
       {selectedAccounts.size > 0 && (
@@ -81,7 +99,7 @@ export default function App() {
       <div className="relative z-0 mt-6">
         <LoadingButton
           onClick={handleRebalance}
-          disabled={selectedAccounts.size === 0 || isLoading}
+          disabled={selectedAccounts.size === 0}
           isLoading={isLoading}
         />
       </div>
@@ -91,12 +109,11 @@ export default function App() {
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
-
-      {rebalanceResults && (
-        <RebalanceResults
-          results={rebalanceResults}
-          selectedAccounts={selectedAccounts}
-        />
+      
+      {success && (
+        <Alert className="mb-4 bg-green-50 border-green-200 text-green-800">
+          <AlertDescription>{success}</AlertDescription>
+        </Alert>
       )}
     </div>
   );

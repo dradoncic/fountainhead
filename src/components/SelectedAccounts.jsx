@@ -7,7 +7,7 @@ export const SelectedAccounts = ({ accounts, onRemoveAccount }) => {
   const groupedAccounts = Array.from(accounts.values()).reduce((acc, account) => {
     if (!acc[account.householdId]) {
       acc[account.householdId] = {
-        householdName: account.householdName,
+        householdName: account.householdName || `Household ${account.householdId}`,
         accounts: []
       };
     }
@@ -37,10 +37,9 @@ export const SelectedAccounts = ({ accounts, onRemoveAccount }) => {
                 >
                   <div className="flex items-center gap-2">
                     <User size={14} className="text-gray-400" />
-                    <span>{account.name}</span>
+                    <span>{account.name} <span className="text-gray-500">({account.id})</span></span>
                   </div>
                   <div className="flex items-center gap-4">
-                    <span className="text-gray-600">${account.balance.toLocaleString()}</span>
                     <Button
                       variant="ghost"
                       size="sm"
