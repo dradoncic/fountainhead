@@ -156,12 +156,12 @@ export const SearchSection = ({ onSelectAccount, onSelectHousehold, accountsData
           placeholder="Search accounts or households..."
           onChange={handleSearch}
           onFocus={handleFocus}
-          className="pl-10 bg-white shadow-sm border-gray-200 flex-grow"
+          className="pl-10 bg-white shadow-sm border-gray-200 flex-grow py-3 text-lg"
         />
         {selectedAccounts.length > 0 && (
           <button 
             onClick={handleAddSelected} 
-            className="ml-2 p-2 bg-white border border-gray-200 rounded hover:bg-gray-50 transition-colors flex items-center justify-center w-10 h-10"
+            className="ml-2 p-2 bg-white border border-gray-200 rounded hover:bg-gray-50 transition-colors flex items-center justify-center w-9 h-9"
           >
             <Plus size={18} className="text-gray-600" />
           </button>
@@ -189,7 +189,7 @@ export const SearchSection = ({ onSelectAccount, onSelectHousehold, accountsData
                   return (
                     <div key={household.householdId} className="border-b last:border-b-0 border-gray-100">
                       <div
-                        className="font-semibold p-3 hover:bg-gray-50 cursor-pointer transition-colors flex justify-between items-center"
+                        className="font-semibold p-3 cursor-pointer transition-colors flex justify-between items-center"
                         onClick={() => handleHouseholdSelect(household.accounts)}
                       >
                         <span>
@@ -199,7 +199,8 @@ export const SearchSection = ({ onSelectAccount, onSelectHousehold, accountsData
                       {household.accounts.map(account => (
                         <div
                           key={account.id}
-                          className="ml-4 p-3 hover:bg-gray-50 cursor-pointer transition-colors flex justify-between items-center bg-white"
+                          className="ml-2 p-3 hover:bg-gray-50 cursor-pointer transition-colors flex justify-between items-center rounded-full"
+
                           onClick={() => handleAccountSelect(account)}
                         >
                           <span>{account.name} <span className="text-gray-500">({account.id})</span></span>

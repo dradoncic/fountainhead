@@ -68,35 +68,42 @@ export default function App() {
       setSuccess("Rebalance preview request sent successfully!");
       setTimeout(() => setSuccess(null), 2000); 
     } catch (error) {
-      setError("Failed to send rebalance request. ");
+      setError("Failed to send rebalance request.");
       setTimeout(() => setError(null), 2000); 
       console.error("Error sending rebalance request:", error);
     } finally {
       setIsLoading(false);
     }
+    setSelectedAccounts(new Map());
   };
 
-
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Portfolio Rebalancing</h1>
+    <div className="p-6 max-w-6xl mx-auto bg-gray-50 rounded-lg shadow-xl">
+      {/* Logo Section */}
+      <div className="flex justify-between items-center mb-6">
+        <img src="/logo.png" alt="Logo" className="w-24 h-auto" />
+        <h1 className="text-3xl font-semibold text-gray-800">Portfolio Rebalancing</h1>
       </div>
       
+      {/* Search Section */}
       <SearchSection
         onSelectAccount={handleAccountSelection}
         onSelectHousehold={handleHouseholdSelection}
         accountsData={accountsData}
       />
 
+      {/* Selected Accounts */}
       {selectedAccounts.size > 0 && (
-        <SelectedAccounts
-          accounts={selectedAccounts}
-          onRemoveAccount={removeAccount}
-        />
+        <div className="mt-6">
+          <SelectedAccounts
+            accounts={selectedAccounts}
+            onRemoveAccount={removeAccount}
+          />
+        </div>
       )}
 
-      <div className="relative z-0 mt-6">
+      {/* Rebalance Button */}
+      <div className="mt-6 flex justify-center">
         <LoadingButton
           onClick={handleRebalance}
           disabled={selectedAccounts.size === 0}
@@ -104,17 +111,20 @@ export default function App() {
         />
       </div>
 
-      {error && (
-        <Alert variant="destructive" className="mb-4">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-      
-      {success && (
-        <Alert className="mb-4 bg-green-50 border-green-200 text-green-800">
-          <AlertDescription>{success}</AlertDescription>
-        </Alert>
-      )}
+      {/* Error and Success Alerts */}
+      <div className="mt-4">
+        {error && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+        
+        {success && (
+          <Alert className="mb-4 bg-green-50 border-green-200 text-green-800">
+            <AlertDescription>{success}</AlertDescription>
+          </Alert>
+        )}
+      </div>
     </div>
   );
 }
