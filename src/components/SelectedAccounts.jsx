@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Briefcase, User, X } from 'lucide-react';
+import { HouseIcon, User, X, Plus } from 'lucide-react';
 
 export const SelectedAccounts = ({ accounts, onRemoveAccount }) => {
   const groupedAccounts = Array.from(accounts.values()).reduce((acc, account) => {
@@ -16,39 +16,37 @@ export const SelectedAccounts = ({ accounts, onRemoveAccount }) => {
   }, {});
 
   return (
-    <Card className="mb-8 border-gray-200 shadow-sm overflow-hidden">
+    <Card className="mb-8 border border-gray-200 shadow-sm overflow-hidden bg-white">
       <div className="bg-gray-50 p-4 border-b border-gray-200">
-        <h3 className="font-semibold">
-          Selected for Rebalancing <span className="text-gray-500 font-normal">({accounts.size} accounts)</span>
+        <h3 className="font-medium text-gray-700">
+          Selected Accounts <span className="text-gray-500 font-normal text-sm">({accounts.size} accounts)</span>
         </h3>
       </div>
-      <CardContent className="p-4">
-        <div className="space-y-4">
+      <CardContent className="p-0">
+        <div className="divide-y divide-gray-100">
           {Object.entries(groupedAccounts).map(([householdId, { householdName, accounts }]) => (
-            <div key={householdId} className="mb-4">
-              <div className="font-medium mb-2 flex items-center gap-2">
-                <Briefcase size={16} className="text-gray-500" />
+            <div key={householdId} className="p-4">
+              <div className="font-medium mb-2 flex items-center gap-2 text-gray-700">
+                <HouseIcon size={16} className="text-blue-600" />
                 {householdName}
               </div>
               {accounts.map(account => (
                 <div 
                   key={account.id} 
-                  className="ml-6 flex justify-between items-center p-2 hover:bg-gray-50 rounded-md"
+                  className="ml-6 flex justify-between items-center p-2 rounded-md"
                 >
                   <div className="flex items-center gap-2">
                     <User size={14} className="text-gray-400" />
-                    <span>{account.name} <span className="text-gray-500">({account.id})</span></span>
+                    <span className="text-gray-600">{account.name} <span className="text-gray-400 text-sm">({account.id})</span></span>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => onRemoveAccount(account.id)}
-                      className="text-gray-400 hover:text-gray-700"
-                    >
-                      <X size={16} />
-                    </Button>
-                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onRemoveAccount(account.id)}
+                    className="text-gray-400 hover:text-gray-700 p-1 h-8 w-8"
+                  >
+                    <X size={18} />
+                  </Button>
                 </div>
               ))}
             </div>

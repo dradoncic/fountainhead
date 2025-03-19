@@ -3,8 +3,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Loader2, Search, AlertTriangle, Check, Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-export const SearchSection = ({ onSelectAccount, onSelectHousehold, accountsData }) => {
+export const SearchSection = ({ onSelectAccount, accountsData }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -73,11 +74,11 @@ export const SearchSection = ({ onSelectAccount, onSelectHousehold, accountsData
             return false;
           }
   
-          const nameMatch = account.name.toLowerCase().includes(query);
-          const idMatch = account.id.toString().toLowerCase().includes(query);
-          const householdMatch = account.householdId.toString().toLowerCase().includes(query);
+          const nameMatch = account.name.toLowerCase().startsWith(query);
+          const householdMatch = account.householdId.toString().toLowerCase().startsWith(query);
+          const idMatch = account.id.toString().toLowerCase().startsWith(query);
   
-          return nameMatch || idMatch || householdMatch;
+          return nameMatch || householdMatch || idMatch;
         });
   
         setSearchResults(filteredResults);
@@ -145,7 +146,7 @@ export const SearchSection = ({ onSelectAccount, onSelectHousehold, accountsData
   }, {});
 
   return (
-    <div className="relative mb-12" ref={searchRef}>
+    <div className="relative mb-8" ref={searchRef}>
       <div className="relative flex items-center">
         <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
           <Search size={18} />
@@ -156,23 +157,25 @@ export const SearchSection = ({ onSelectAccount, onSelectHousehold, accountsData
           placeholder="Search accounts or households..."
           onChange={handleSearch}
           onFocus={handleFocus}
-          className="pl-10 bg-white shadow-sm border-gray-200 flex-grow py-3 text-lg"
+          className="pl-10 py-2 border border-gray-300 rounded-md bg-white focus:ring-grey-500 focus:border-grey-500 flex-grow"
         />
         {selectedAccounts.length > 0 && (
-          <button 
-            onClick={handleAddSelected} 
-            className="ml-2 p-2 bg-white border border-gray-200 rounded hover:bg-gray-50 transition-colors flex items-center justify-center w-9 h-9"
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleAddSelected}
+            className="text-gray-400 hover:text-gray-700 ml-2 h-8 w-8"
           >
-            <Plus size={18} className="text-gray-600" />
-          </button>
+            <Plus size={18} />
+          </Button>
         )}
       </div>
       
       {isResultsVisible && (
-        <Card className="absolute w-full z-50 mt-1 border-gray-200 shadow-lg overflow-hidden bg-gray-100">
+        <Card className="absolute w-full z-50 mt-1 border border-gray-200 shadow-lg overflow-hidden bg-white">
           {isSearching ? (
             <div className="flex items-center justify-center p-4">
-              <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+              <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
             </div>
           ) : searchError ? (
             <div className="p-4 text-center text-red-500 flex items-center justify-center gap-2">
@@ -189,23 +192,22 @@ export const SearchSection = ({ onSelectAccount, onSelectHousehold, accountsData
                   return (
                     <div key={household.householdId} className="border-b last:border-b-0 border-gray-100">
                       <div
-                        className="font-semibold p-3 cursor-pointer transition-colors flex justify-between items-center"
+                        className="bg-gray-50 font-medium p-3 cursor-pointer hover:bg-gray-100 transition-colors flex justify-between items-center"
                         onClick={() => handleHouseholdSelect(household.accounts)}
                       >
-                        <span>
+                        <span className="text-gray-700">
                           {household.householdName} <span className="text-sm font-normal text-gray-500">(Select All)</span>
                         </span>
                       </div>
                       {household.accounts.map(account => (
                         <div
                           key={account.id}
-                          className="ml-2 p-3 hover:bg-gray-50 cursor-pointer transition-colors flex justify-between items-center rounded-full"
-
+                          className="p-3 pl-6 hover:bg-gray-50 cursor-pointer transition-colors flex justify-between items-center"
                           onClick={() => handleAccountSelect(account)}
                         >
-                          <span>{account.name} <span className="text-gray-500">({account.id})</span></span>
+                          <span className="text-gray-700">{account.name} <span className="text-gray-500 text-sm">({account.id})</span></span>
                           {selectedAccounts.some(a => a.id === account.id) && (
-                            <Check size={16} className="text-blue-500" />
+                            <Check size={16} className="text-blue-600" />
                           )}
                         </div>
                       ))}
@@ -216,7 +218,7 @@ export const SearchSection = ({ onSelectAccount, onSelectHousehold, accountsData
             </ScrollArea>
           ) : searchQuery.length >= 2 ? (
             <div className="p-4 text-center text-gray-500">
-              No accounts or households found
+              No accounts or households found.
             </div>
           ) : null}
         </Card>

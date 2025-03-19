@@ -31,14 +31,6 @@ export default function App() {
     setSelectedAccounts(new Map(selectedAccounts.set(account.id, account)));
   };
 
-  const handleHouseholdSelection = (householdAccounts) => {
-    const newSelected = new Map(selectedAccounts);
-    householdAccounts.forEach(account => {
-      newSelected.set(account.id, account);
-    });
-    setSelectedAccounts(newSelected);
-  };
-
   const removeAccount = (accountId) => {
     const newSelected = new Map(selectedAccounts);
     newSelected.delete(accountId);
@@ -78,53 +70,75 @@ export default function App() {
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto bg-gray-50 rounded-lg shadow-xl">
-      {/* Logo Section */}
-      <div className="flex justify-between items-center mb-6">
-        <img src="/logo.png" alt="Logo" className="w-24 h-auto" />
-        <h1 className="text-3xl font-semibold text-gray-800">Portfolio Rebalancing</h1>
-      </div>
-      
-      {/* Search Section */}
-      <SearchSection
-        onSelectAccount={handleAccountSelection}
-        onSelectHousehold={handleHouseholdSelection}
-        accountsData={accountsData}
-      />
-
-      {/* Selected Accounts */}
-      {selectedAccounts.size > 0 && (
-        <div className="mt-6">
-          <SelectedAccounts
-            accounts={selectedAccounts}
-            onRemoveAccount={removeAccount}
-          />
+    <div className="min-h-screen bg-gray-100">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200 h-35">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div className="flex items-center">
+              <img src="/assets/react.svg" alt="Fountainhead Asset Management" className="h-8 w-auto" />
+            </div>
+            <nav className="flex space-x-6">
+              <a href="#" className="text-sm font-medium text-gray-500 hover:text-gray-900">Our Philosophy</a>
+              <a href="#" className="text-sm font-medium text-gray-500 hover:text-gray-900">What You Gain</a>
+              <a href="#" className="text-sm font-medium text-gray-500 hover:text-gray-900">Meet Your Team</a>
+              <a href="#" className="text-sm font-medium text-gray-500 hover:text-gray-900">Insights</a>
+              <a href="#" className="text-sm font-medium text-gray-500 hover:text-gray-900">Contact Us</a>
+            </nav>
+          </div>
         </div>
-      )}
+      </header>
 
-      {/* Rebalance Button */}
-      <div className="mt-6 flex justify-center">
-        <LoadingButton
-          onClick={handleRebalance}
-          disabled={selectedAccounts.size === 0}
-          isLoading={isLoading}
-        />
-      </div>
+      {/* Main Content */}
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12"> 
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200"> 
+          <div className="p-10"> 
+            <h1 className="text-2xl font-medium text-gray-800 mb-4">Portfolio Rebalancing</h1> 
+            
+            {/* Search Section */}
+            <div className="mb-8"> 
+              <SearchSection
+                onSelectAccount={handleAccountSelection}
+                accountsData={accountsData}
+              />
+            </div>
 
-      {/* Error and Success Alerts */}
-      <div className="mt-4">
-        {error && (
-          <Alert variant="destructive" className="mb-4">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
-        
-        {success && (
-          <Alert className="mb-4 bg-green-50 border-green-200 text-green-800">
-            <AlertDescription>{success}</AlertDescription>
-          </Alert>
-        )}
-      </div>
+            {/* Selected Accounts */}
+            {selectedAccounts.size > 0 && (
+              <div className="mt-5 mb-8">
+                <SelectedAccounts
+                  accounts={selectedAccounts}
+                  onRemoveAccount={removeAccount}
+                />
+              </div>
+            )}
+
+            {/* Rebalance Button */}
+            <div className="mt-10 mb-4">
+              <LoadingButton
+                onClick={handleRebalance}
+                disabled={selectedAccounts.size === 0}
+                isLoading={isLoading}
+              />
+            </div>
+
+            {/* Error and Success Alerts */}
+            <div className="mt-8"> 
+              {error && (
+                <Alert variant="destructive" className="mb-4">
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+              
+              {success && (
+                <Alert className="mb-4 bg-green-50 border-green-200 text-green-800">
+                  <AlertDescription>{success}</AlertDescription>
+                </Alert>
+              )}
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
-  );
-}
+  )
+};

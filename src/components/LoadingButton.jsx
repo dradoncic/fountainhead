@@ -3,11 +3,20 @@ import { Button } from '@/components/ui/button';
 import { BarChart2 } from 'lucide-react';
 
 export const LoadingButton = ({ onClick, disabled, isLoading }) => {
+  // Only render the button if it's not disabled
+  if (disabled) {
+    return null; // Return nothing if the button is disabled
+  }
+
   return (
     <Button
       onClick={onClick}
       disabled={disabled}
-      className={`w-full mb-4 py-6 text-lg font-medium shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+      className={`w-full py-3 text-base font-medium transition-colors ${
+        disabled
+          ? 'bg-blue-600 text-white cursor-wait' 
+          : 'bg-blue-600 text-white hover:bg-blue-700'
+      }`}
     >
       {isLoading ? (
         <span className="flex items-center">
