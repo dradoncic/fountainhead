@@ -49,7 +49,7 @@ export const SearchSection = ({ onSelectAccount, accountsData }) => {
   }, []);
 
   const handleSearch = (e) => {
-    const query = e.target.value.toLowerCase();
+    const query = e.target.value;
     setSearchQuery(query);
   
     if (searchTimeout.current) {
@@ -74,9 +74,9 @@ export const SearchSection = ({ onSelectAccount, accountsData }) => {
             return false;
           }
   
-          const nameMatch = account.name.toLowerCase().startsWith(query);
-          const householdMatch = account.householdId.toString().toLowerCase().startsWith(query);
-          const idMatch = account.id.toString().toLowerCase().startsWith(query);
+          const nameMatch = account.name.toLowerCase().startsWith(query.toLowerCase());
+          const householdMatch = account.householdId.toString().toLowerCase().startsWith(query.toLowerCase());
+          const idMatch = account.id.toString().toLowerCase().startsWith(query.toLowerCase());
   
           return nameMatch || householdMatch || idMatch;
         });
@@ -192,7 +192,7 @@ export const SearchSection = ({ onSelectAccount, accountsData }) => {
                   return (
                     <div key={household.householdId} className="border-b last:border-b-0 border-gray-100">
                       <div
-                        className="bg-gray-50 font-medium p-3 cursor-pointer hover:bg-gray-100 transition-colors flex justify-between items-center"
+                        className="font-medium p-3 cursor-pointer hover:bg-gray-50 transition-colors flex justify-between items-center"
                         onClick={() => handleHouseholdSelect(household.accounts)}
                       >
                         <span className="text-gray-700">
@@ -205,7 +205,17 @@ export const SearchSection = ({ onSelectAccount, accountsData }) => {
                           className="p-3 pl-6 hover:bg-gray-50 cursor-pointer transition-colors flex justify-between items-center"
                           onClick={() => handleAccountSelect(account)}
                         >
-                          <span className="text-gray-700">{account.name} <span className="text-gray-500 text-sm">({account.id})</span></span>
+                          <div className="flex flex-col">
+                            <span className="text-gray-700">
+                              {account.name} 
+                              <span className="text-gray-500 text-sm ml-2">({account.id})</span>
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              Rep: {account.representative} | 
+                              Custodian: {account.custodian} | 
+                              Model: {account.model}
+                            </span>
+                          </div>
                           {selectedAccounts.some(a => a.id === account.id) && (
                             <Check size={16} className="text-blue-600" />
                           )}
