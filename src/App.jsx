@@ -17,6 +17,7 @@ export default function App() {
     const fetchAccounts = async () => {
       try {
         const data = await searchAccounts();
+        console.log(data)
         setAccountsData(data);
       } catch (error) {
         setError("Failed to fetch accounts. Please try again.");
