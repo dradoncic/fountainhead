@@ -1,4 +1,4 @@
-/* index.css */
+/* src/index.css */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -6,21 +6,21 @@
 @tailwind utilities;
 
 :root {
-  --background: #f9fafb;
-  --foreground: #111827;
-  --muted: #6b7280;
-  --border: #e5e7eb;
-  --accent: #4f46e5;
-  --accent-hover: #4338ca;
-  --card: #ffffff;
-  --card-foreground: #111827;
-  --primary: #4f46e5;
-  --primary-foreground: #ffffff;
-  --secondary: #f3f4f6;
-  --secondary-foreground: #111827;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --ring: #4f46e5;
+  --background: #F5F7FA;
+  --foreground: #3C4858;
+  --muted: #6B7280;
+  --border: #E0E6ED;
+  --accent: #4A90E2;
+  --accent-hover: #3A7BD5;
+  --card: #FFFFFF;
+  --card-foreground: #3C4858;
+  --primary: #4A90E2;
+  --primary-foreground: #FFFFFF;
+  --secondary: #E6F2FF;
+  --secondary-foreground: #3C4858;
+  --destructive: #FF6B6B;
+  --destructive-foreground: #FFFFFF;
+  --ring: #4A90E2;
 }
 
 @layer base {
@@ -29,53 +29,48 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Modern Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
   }
 
   ::-webkit-scrollbar-track {
-    background: var(--background);
+    background: #E6F2FF;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--border);
+    background: #4A90E2;
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--muted);
+    background: #3A7BD5;
   }
 }
 
 @layer components {
-  /* Card Component */
   .card {
     @apply bg-white rounded-lg border border-[var(--border)] shadow-sm 
            transition-all duration-200 hover:shadow-md;
+    box-shadow: 0 4px 6px rgba(74, 144, 226, 0.1);
   }
 
-  /* Input Fields */
   .input {
     @apply border border-[var(--border)] rounded-lg px-4 py-2 
            focus:outline-none focus:ring-2 focus:ring-[var(--accent)] 
            focus:border-transparent transition-all duration-200;
   }
 
-  /* Button Styling */
   .button {
     @apply bg-[var(--accent)] text-white rounded-lg px-6 py-2 
            font-medium transition-all duration-200 
            hover:bg-[var(--accent-hover)] disabled:opacity-50;
   }
 
-  /* Rebalancing Button */
   .rebalance-button {
     @apply bg-[var(--accent)] text-white rounded-lg px-8 py-3 font-semibold transition-all duration-200 
            hover:bg-[var(--accent-hover)] disabled:opacity-50;
   }
 
-  /* Alert Styles */
   .alert {
     @apply rounded-lg p-4 mb-4 shadow-lg;
   }
@@ -84,31 +79,26 @@
     @apply text-sm;
   }
 
-  /* Destructive Alert */
   .alert-destructive {
-    @apply bg-[var(--destructive)] text-[var(--destructive-foreground)] border border-[var(--destructive)] shadow-md;
+    @apply bg-[#FFE5E5] text-[#D8000C] border border-[#FFB6B6] shadow-md;
   }
 
-  /* Success Alert */
   .alert-success {
-    @apply bg-green-50 border-green-200 text-green-800 shadow-md;
+    @apply bg-[#E6F3FF] text-[#007A33] border border-[#A8C5DD] shadow-md;
   }
 }
 
 @layer utilities {
-  /* Custom utility for the logo container */
   .logo-container {
     @apply flex items-center space-x-4 mb-6;
   }
 
-  /* Spacing and Layout Utilities for Responsive Design */
   .main-container {
     @apply p-6 max-w-6xl mx-auto bg-white rounded-lg shadow-lg;
+    box-shadow: 0 10px 15px rgba(74, 144, 226, 0.1);
   }
 
-  /* Layout for full-screen width */
   .full-width {
     @apply w-full;
   }
 }
-

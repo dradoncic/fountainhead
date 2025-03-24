@@ -83,3 +83,22 @@ export const rebalanceAccounts = async (accountList) => {
     throw new Error(`Failed to send rebalance request: ${error.message}`);
   }
 };
+
+
+/**
+ * Fetches accounts from the server
+ * @returns {Promise<Object>} JSON response from the server
+ */
+export const startUp = async () => {
+  try {
+    const url = new URL(`${API_BASE_URL}/fetchData`);
+    
+    const response = await fetch(url.toString(), createRequestOptions('GET'));
+    const data = await handleResponse(response);
+    
+    return data;
+  } catch (error) {
+    console.error('Error fetching neccessary data:', error);
+    throw new Error(`Failed to fetch all of the data: ${error.message}`);
+  }
+};
