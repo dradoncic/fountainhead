@@ -77,8 +77,10 @@ export const SearchSection = ({ onSelectAccount, accountsData }) => {
           const nameMatch = account.name.toLowerCase().startsWith(query.toLowerCase());
           const householdMatch = account.householdId.toString().toLowerCase().startsWith(query.toLowerCase());
           const idMatch = account.id.toString().toLowerCase().startsWith(query.toLowerCase());
+          const custodianMatch = account.custodian.toLowerCase().startsWith(query.toLowerCase());
+          const representativeMatch = account.representative.toLowerCase().startsWith(query.toLowerCase());
   
-          return nameMatch || householdMatch || idMatch;
+          return nameMatch || householdMatch || idMatch || custodianMatch ||  representativeMatch;
         });
   
         setSearchResults(filteredResults);

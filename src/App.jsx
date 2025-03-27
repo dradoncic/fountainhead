@@ -20,7 +20,6 @@ export default function App() {
       try {
         const data = await startUp();
         setIsStartup(false);
-        console.log(data);
       } catch {
         setError('Failed to load the necessary data. Please try again.');
         console.error("Error starting up the application: ", error);
@@ -35,6 +34,7 @@ export default function App() {
     const fetchAccounts = async () => {
       try {
         const data = await searchAccounts();
+        console.log(data);
         setAccountsData(data);
       } catch (error) {
         setError("Failed to fetch accounts. Please try again.");
